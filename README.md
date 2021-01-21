@@ -239,5 +239,61 @@ format array
 console.log(user1['name']) // Burhan
 ```
 Bentuk array ini akan sangat berguna jika nama propertinya bersifat dinamis
-```javascript
 
+Cara mengakses properti dengan menggunakan titik maupun dengan format array ini juga berlaku pada
+nested property atau properti yang bertingkat.
+
+```javascript
+const user2 = {
+ name: 'Doni',
+ addrees: {
+ street: 'Jl. Dago 30',
+ city: 'Bandung'
+ }
+}
+console.log(user2.name) // Doni
+console.log(user2.addrees.street) // Jl Dago 30
+console.log(user2['addrees']['city']) // Bandung
+```
+Cara mengakses properti secara bertingkat inilah yang kemudian disebut sebagai chaining.
+Lalu apa itu optional chaining?
+Optional chaining merupakan bentuk opsional pada pengaksesan suatu properti secara bertingkat
+
+
+Nah untuk mencegah fatal error itu, kita perlu mengecek terlebih dahulu variabel user3 sebelum kita
+akses properti name-nya. Cara singkatnya kita bisa gunakan short-circuit-evaluation and.
+
+```javascript
+const user3 = null
+console.log(user3 && user3.name) // undefine
+```
+Kode di atas apabila kita jalankan akan menghasilkan undefined tanpa muncul error. Dengan cara ini
+kode kita akan lebih aman dari kemungkinan terjadinya error.
+
+Namun Javascript juga memiliki cara yang lebih singkat lagi untuk mengatasi hal ini yaitu dengan
+menggunakan apa yang disebut sebagai optional chaining
+Yaitu dengan menambahkan karakter tanda tanya ? sebelum karakter titik pada chaining.
+
+```javascript
+const user3 = null
+console.log(user3?.name) // undefined
+```
+Pada kasus nested properti maka optional chaining ini juga berlaku.
+```javascript
+const user3 = null
+console.log(user3?.name) // undefined
+console.log(user3?.addrees?.street) // undefined
+```
+
+Lalu bagaimana dengan chaining yang menggunakan format array ?
+Untuk format array maka gunakan karakter tanda tanya diikuti spasi ?., sebagaimana contoh berikut:
+```javascript
+const user3 = null
+console.log(user3?.['name']) // undefined
+console.log(user3?.['addrees']?.['city']) // undefined
+```
+
+## Fungsi Pada Array 
+### Fungsi map()
+Fungsi map() digunakan untuk memetakan suatu array dan melakukan operasi tertentu pada setiap
+itemnya kemudian mengembalikan array baru
