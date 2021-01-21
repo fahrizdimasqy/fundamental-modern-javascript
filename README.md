@@ -146,3 +146,98 @@ Web.render();
 ```
 Dengan menggunakan format arrow function maka konteks this tidak lagi mengacu pada objek
 Timeout melainkan objek Web.
+```javasript
+const Web = {
+  teks: "hello",
+  render: () => {
+    setTimeout(() => {
+      console.log("menampilkan: " + this.teks);
+    }, 1000);
+  },
+};
+console.log(Web.teks);
+Web.render();
+```
+Wah, mengapa this.teks menghasilkan undefined?
+Hal ini disebabkan karena konteks this disitu menjadi tidak mengacu pada objek Web melainkan
+mengacu ke objek di atasnya lagi atau jika kita jalankan pada console browser maka this mengacu
+pada objek Window.
+
+## Conditional Operator 
+Conditional operator ini digunakan ketika kita harus menjalankan statemen berdasarkan kondisi tertentu,
+umumnya kita bisa menggunakan if-else atau switch.
+Ada dua bentuk conditional operator yang akan kita bahas yaitu ternary operator dan short circuit
+evaluation.
+
+### Ternary Operator
+Ternary operator atau conditional ternary operator mengacu pada bentuk pendek dari logika if, dimana
+kita bisa menuliskannya dalam satu statemen saja.
+```javascript
+// cara biasa
+if (statemen) benar else salah
+// ternary operator
+statement ? benar : salah
+```
+```javascript
+const nilai = 80
+console.log((nilai >= 75) ? 'Lulus' : 'Tidak Lulus')
+```
+### Short-circuit Evaluation
+Short-circuit evaluation artinya pengujian atau evaluasi yang minimal terhadap ekpresi boolean (operator
+logika AND && dan OR ||). Evaluasi terhadap ekspresi dilakukan dari kiri ke kanan.
+ekspresi1 && ekspresi2
+Pada logika AND, evaluasi akan bernilai true hanya jika ekpresi pertama dan kedua bernilai true.
+Contoh kedua pada logika OR.
+ekspresi1 || ekspresi2
+Pada logika OR, evaluasi akan bernilai true hanya jika salah satu saja dari ekpresi bernilai true.
+
+Perhatikan contoh berikut:
+```javascript
+const auth = true
+console.log(auth && 'Selamat datang!') // Selamat datang!
+```
+Kode di atas artinya jika variabel auth bernilai true maka teks Selamat datang! akan ditampilkan
+
+Perhatikan juga contoh kedua ini:
+```javascript
+const user = {
+ nama: 'Arif',
+ umur: 25
+}
+console.log(user.pekerjaan || 'Pengangguran') // Pengangguran
+```
+Jika properti pekerjaan tidak didefinisikan maka akan ditampilkan teks Pengangguran
+```javascript
+const user2 = {
+ nama: 'Budi',
+ umur: 27,
+ pekerjaan: 'Programmer'
+}
+console.log(user2.pekerjaan || 'Pengangguran') // Programmer
+```
+Jika properti pekerjaan didefinisikan maka akan ditampilkan nilai dari properti tersebut.
+### Optional Chaining
+kita memiliki sebuah objek user1 yang memiliki beberapa properti.
+```javascript
+const user1 = {
+ name: 'Burhan',
+ street: 'Jl. Jenderal Soedirman 50',
+ city: 'Jakarta',
+} 
+```
+Untuk mengakses properti pada objek user maka kita bisa menggunakan karakter titik setelah nama
+objek dan diikuti dengan nama propertinya.
+
+```javascript
+console.log(user1.name) // Burhan
+console.log(user1.street) // Jl. Jenderal Soedirman 50
+console.log(user1.city) // Jakarta
+```
+Disamping menggunakan karakter titik, kita juga bisa mengakses properti pada objek menggunakan
+format array
+```javascript
+console.log(user1['name']) // Burhan
+```
+Bentuk array ini akan sangat berguna jika nama propertinya bersifat dinamis
+```javascript
+
