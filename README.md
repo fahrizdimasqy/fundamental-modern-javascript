@@ -709,3 +709,76 @@ load("https://jsonplaceholder.typicode.com/todos/1", (data) => {
 document.writeln("loading ...");
 ```
 ### Promise
+Promise merupakan fitur untuk proses asynchronous yang diperkenalkan mulai ES6. Pada sebuah
+proses asynchronous setidaknya ada dua kemungkinan hasilnya yaitu: berhasil dan gagal.
+Nah, promise ini memastikan ada hasil dari sebuah proses asynchronous tersebut, entah itu berhasil
+atau gagal
+```javascript
+let promise = new Promise((resolve, reject) => {
+  let xhr = new XMLHttpRequest();
+  xhr.onload = function () {
+    resolve(this.responseText);
+  };
+  xhr.onerror = function () {
+    reject(`Network Error`);
+  };
+  xhr.open("GET", "https://jsonplaceholder.typicode.com/todos/1", true);
+  xhr.send();
+});
+
+promise
+  .then((result) => document.writeln(result))
+  .catch((error) => document.writeln(error));
+document.writeln("loading ...");
+```
+Terkait dengan request ke web service, Javascript sejak ES6 juga memperkenalkan fitur fetch yang
+bekerja dengan menggunakan promise. Berikut ini contoh kode yang hasilnya sama dengan sebelumnya
+```javascript
+let promise = fetch("https://jsonplaceholder.typicode.com/todos/1");
+promise
+  .then((response) => response.json())
+  .then((json) => document.writeln(JSON.stringify(json)))
+  .catch((error) => document.writeln(error));
+document.writeln("loading ...");
+```
+Method then dipanggil dua kali karena fitur fetch akan mengembalikan response dalam bentu object.
+Nah untuk mengubahnya menjadi format JSON maka kita bisa gunakan method json() yang
+mengembalikan promise juga sehingga kita gunakan method then yang kedua untuk mendapatkan data
+response dalam format JSON.
+### Async & Await
+Async Await dalah fitur yang diperkenalkan pada ES2017, digunakan untuk membuat kode asynchronous
+namun dengan cara synchronous sehingga lebih mudah dipahami.
+Berikut ini sintaks penulisannya:
+```javascript
+async function getData(url) {
+ let result = await fetch(url)
+ console.log(result)
+}
+```
+Kalo kita implementasikan pada kasus sebelumnya, maka kodenya menjadi sebagai berikut:
+```javascript
+const load = async () => {
+ let response = await
+fetch('https://jsonplaceholder.typicode.com/todos/1')
+ let json = await response.json()
+ document.writeln(JSON.stringify(json))
+}
+load()
+document.writeln('loading ...')
+```
+Lalu bagaimana penanganan errornya? kita bisa gunakan try-catch biasa.
+```javascript
+const load = async () => {
+ try {
+ let response = await
+fetch('https://jsonplaceholder.typicode.com/todos/1')
+ let json = await response.json()
+ document.writeln(JSON.stringify(json))
+ } catch (error) {
+ document.writeln(error) // contoh error : TypeError: Failed to
+fetch
+ }
+}
+load()
+document.writeln('loading ...')
+ ```
