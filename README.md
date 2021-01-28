@@ -297,3 +297,415 @@ console.log(user3?.['addrees']?.['city']) // undefined
 ### Fungsi map()
 Fungsi map() digunakan untuk memetakan suatu array dan melakukan operasi tertentu pada setiap
 itemnya kemudian mengembalikan array baru
+
+contoh
+```javascript
+let user = ["fahriz", "dimas", "naruto", "sasuke", "natsu"];
+
+let userUppercase = user.map((item) => item.toUpperCase());
+console.log(userUppercase);
+```
+Pada setiap iterasinya, nilai dari variabel item akan diubah formatnya menjadi kapital dengan
+menggunakan fungsi string toUpperCase() untuk kemudian dikembalikan nilainya.
+Hasilnya, variabel array baru atau dalam hal ini usersUpperCase akan memiliki item array yang sama
+dengan variabel users namun dengan format huruf kapital.
+
+contoh dalam objek
+```javascript
+let users = [
+ { name: 'Albert'},
+ { name: 'Romy'},
+ { name: 'Shinta'}
+];
+let usersUpperCase = users.map((item) => {
+ let nameUpperCase = item.name.toUpperCase()
+ return { name: nameUpperCase }
+});
+console.log(usersUpperCase); 
+```
+Dengan fungsi map() ini, kita juga bisa melakukan transformasi bentuk array of object menjadi bentuk
+array biasa dengan cara mengekstraksi data pada setiap item.
+Lihat contoh berikut:
+```javascript
+let users = [
+ { id: 1, name: 'Albert' },
+ { id: 2, name: 'Romy' },
+ { id: 3, name: 'Shinta' },
+];
+let userIds = users.map((item) => return item.id)
+console.log(userIds) // [ 1, 2, 3 ]
+```
+
+### Fungsi filter()
+Sesuai dengan namanya, fungsi filter() ini digunakan untuk mem-filter atau menyaring suatu array.
+Fungsi ini juga bersifat immutable. Adapun Format penulisannya hampir sama dengan fungsi map()
+```javascript
+const bilangan = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+let ganjil = bilangan.filter((item) => item % 2 === 1);
+console.log(ganjil);
+```
+Contoh lain, misalnya kita hanya ingin menampilkan data user yang jenis kelaminnya laki-laki saja
+```javascript
+let users = [
+ { id: 1, name: 'Albert', gender: 'male' },
+ { id: 2, name: 'Romy', gender: 'male' },
+ { id: 3, name: 'Shinta', gender: 'female' },
+ { id: 4, name: 'Hendra', gender: 'male' },
+ { id: 5, name: 'Fenny', gender: 'female' },
+ { id: 6, name: 'Desta', gender: 'male' },
+];
+let maleUsers = users.filter((item) => {
+ return (item.gender === 'male')
+})
+console.log(maleUsers)
+/* hasilnya
+[
+ { id: 1, name: 'Albert', gender: 'male' },
+ { id: 2, name: 'Romy', gender: 'male' },
+ { id: 4, name: 'Hendra', gender: 'male' },
+ { id: 6, name: 'Desta', gender: 'male' }
+]
+*/
+```
+### Fungsi reduce() ~3
+Fungsi reduce() ini digunakan untuk melakukan operasi tertentu terhadap setiap item dari array. Fungsi
+ini juga bersifat immutable.
+Berikut ini sintaksnya:
+```javascript
+result = var_array.reduce((resutSebelumnya, item) => {
+ return resutSebelumnya operator item
+},
+```
+
+contoh dalam bentuk array:
+```javascript
+const bilangan = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+total = bilangan.reduce((sum, item) => sum + item, 0);
+console.log(total);
+
+rata2 = bilangan.reduce((sum, idx, item, array) => {
+  sum = sum + idx;
+  return idx === array.length - 1 ? sum / array.length : sum;
+}, 0);
+console.log(rata2);
+```
+
+contoh dalam bentuk objek:
+```javascript
+const cart = [
+ {id:1, name:'buku', qty:5, price:7000},
+ {id:2, name:'pensil', qty:2, price:4000},
+ {id:3, name:'rautan', qty:1, price:2000},
+]
+const totalBelanja = cart.reduce((total, item) => {
+ return total + (item.qty * item.price)
+}, 0)
+console.log(totalBelanja) // 45000
+```
+
+## Spread Operator
+Spread operator merupakan fitur yang digunakan untuk melakukan pemecahan atau ekstraksi item pada
+suatu array atau string atau objek.
+Sintaks spread operator menggunakan tanda tiga titik ....
+```javascript
+// string
+let teks = 'Belajar Javascript'
+console.log(teks) // Belajar Javascript
+console.log(...teks) // B e l a j a r J a v a s c r i p t
+// array
+let menus = ['Bakso', 'Sate', 'Gado-gado']
+console.log(menus) // [ 'Bakso', 'Sate', 'Gado-gado' ]
+console.log(...menus) // Bakso Sate Gado-gado
+```
+
+### argument pada fungsi
+```javascript
+function hitung(a, b, c) {
+  return a + b + c;
+}
+
+let bilangan = [1, 2, 3];
+console.log(hitung(...bilangan));
+//  6
+```
+### Array Concatenation
+Kegunaan lain dari spread operator adalah untuk menggabungkan array, jika sebelumnya kita bisa
+gunakan method concat pada array.
+Perhatikan kode berikut:
+```javascript
+let arr1 = [0, 1, 2];
+let arr2 = [3, 4, 5];
+// menggunakan fungsi concat
+let arrConcate = arr1.concat(arr2);
+console.log(arrConcate); // [ 0, 1, 2, 3, 4, 5 ]
+// menggunakan spread operator
+let arrSpread = [...arr1, ...arr2];
+console.log(arrSpread); // [ 0, 1, 2, 3, 4, 5 ]
+```
+Termasuk dalam hal menyisipkan array pada suatu array lain menjadi lebih mudah.
+```javascript
+let numbers1 = ['tiga', 'empat'];
+let numbers2 = ['satu', 'dua', ...numbers1, 'lima'];
+console.log( numbers2 ); // [ 'satu', 'dua', 'tiga', 'empat', 'lima' ]
+```
+### Object Concatenation 
+Spread operator juga berguna untuk menggabungkan dua objek.
+Tanpa spread operator, kita bisa menggunakan fungsi Object.assign().
+```javascript
+const user = { username: 'alex88', email: 'alex88@gmail.com' };
+const profile = { name: 'Alexander', city: 'Moscow' };
+const userProfile = Object.assign(user, profile);
+console.log(userProfile)
+/*
+{
+ username: 'alex88',
+ email: 'alex88@gmail.com',
+ name: 'Alexander',
+ city: 'Moscow'
+}
+*/
+const user = { username: 'alex88', email: 'alex88@gmail.com' };
+const profile = { name: 'Alexander', city: 'Moscow' };
+const userProfile = { ...user, ...profile };
+console.log(userProfile);
+/*
+{
+ username: 'alex88',
+ email: 'alex88@gmail.com',
+ name: 'Alexander',
+ city: 'Moscow'
+}
+*/
+```
+Contoh lain, misalnya ingin meng-copy sebuah array ke variabel lain
+```javascript
+const user = { name: 'Andi' };
+// cara biasa
+const copyUser = Object.assign({}, user);
+console.log(copyUser);
+// spread operator
+const copyUser2 = { ...user };
+console.log(copyUser2);
+```
+
+## Destructuring Assignment 
+Destructuring assignment merupakan fitur Javascript yang berfungsi memecah item atau properti dari
+sebuah array atau objek ke dalam variabel yang berbeda.
+
+### Array Destructuring
+Sebagai contoh, kita akan memecah setiap items pada array menjadi sebuah variabel tersendiri.
+Cara yang biasa dilakukan adalah sebagai berikut.
+
+```javascript
+const colors = ['merah', 'kuning', 'hijau']
+// array destructuring
+let [satu, dua, tiga] = colors
+console.log(satu) // merah
+console.log(dua) // kuning
+console.log(tiga) // hijau
+```
+
+Kita juga bisa mengambil sebagian item saja dari array. Misalnya item satu dan dua saja
+Selain itu, kita juga bisa melewati pengambilan sebagian item dari array. Misal kita ingin mengambil item
+pada index satu dan tiga saja.
+
+Terakhir, kita bisa memberikan nilai default pada item, sehingga ketika data item pada array itu ternyata
+kosong maka variabel tersebut akan memiliki nilai defaultnya.
+Contoh berikut menunjukkan bahwa item ke empat dari array colors sebenarnya tidak didefinisikan,
+namun kita berikan nilai biru, sehingga ketika kita cetak variabel empat akan menghasilkan nilai biru
+```javascript
+const colors = ['merah', 'kuning', 'hijau']
+let [satu, dua, tiga, empat='biru'] = colors
+console.log(empat) // biru
+```
+## Object Destructuring
+Sebagai contoh, kita akan memecah setiap properti pada objek menjadi sebuah variabel tersendiri. Cara
+yang biasa dilakukan adalah sebagai berikut.
+
+```javascript
+const user = {
+ name: 'Melodi',
+ gender: 0,
+ age: 24
+}
+// object destructuring
+let { name, gender, age } = user
+console.log(name) // Melodi
+console.log(gender) // 0
+console.log(age) // 24
+```
+Bentuk lain, jika variabel telah dideklarasikan sebelumnya alias bukan pada saat assignment maka
+perlakuannya sedikit berbeda.
+```javascript
+let name, gender, age
+let user = {
+ name: 'Melodi',
+ gender: 0,
+ age: 24
+};
+// jika variabel telah dideklarasikan sebelumnya maka gunakan tanda
+kurung ()
+({name, gender, age} = user)
+console.log(name) // Budi
+console.log(gender) // Budi
+console.log(age) // 20
+```
+
+Disamping itu, kita bisa memberikan nilai default pada properti, sehingga ketika data properti pada objek
+itu ternyata kosong maka variabel tersebut akan memiliki nilai defaultnya.
+```javascript
+const user = {
+ name: 'Melodi',
+ gender: 0,
+ age: 24
+}
+let { name, born='Paris' } = user
+console.log(name + ' lahir di ' + born) // Melodi lahir di Paris
+```
+Fitur ini juga dapat diterapkan pada props atau parameter sebuah fungsi. Berikut ini contoh dengan cara
+biasa.
+```javascript
+const user = {
+ name: 'Melodi',
+ gender: 0,
+ age: 24
+}
+const print = (props) => {
+ console.log(props.name + ' umurnya ' + props.age + ' tahun')
+}
+print(user) // Melodi umurnya 24 tahun
+```
+Jika menggunakan fitur object destructuring akan menjadi sebagai berikut:
+```javascript
+const user = {
+ name: 'Melodi',
+ gender: 0,
+ age: 24
+}
+const print = ({name, gender, age}) => {
+ console.log(name + ' umurnya ' + age + ' tahun')
+ }
+print(user) // // Melodi umurnya 24 tahun
+```
+Sebuah objek juga bisa kita destrukturisasi kemudian propertinya di-assign ke variabel lain. Contoh
+dengan cara biasa.
+```javascript
+const user = {
+ name: 'Melodi',
+ gender: 0,
+ age: 24
+}
+const {name: nama, age: umur} = user
+console.log(nama) // Melodi
+console.log(umur) // 24
+```
+### Kombinasi Array & Object Destructuring
+Array dari objek juga bisa kita destructuring, misalnya untuk mengambil properti name dari objek users
+dengan item ke tiga.
+```javascript
+const users = [
+ { id: 1, name: 'Anwar'},
+ { id: 2, name: 'Doni'},
+ { id: 3, name: 'Mila'}
+]
+let [,, { name }] = users
+console.log(name) // Mila
+```
+### Kombinasi Destructuring Assignment & Spread Operator
+Fitur destructuring assignment juga bisa digunakan bersama dengan fitur spread operator. Spread
+operator yang diimplementasikan bersama dengan destructuring assignment inilah yang kemudian
+disebut sebagai rest operator.
+```javascript
+const colors = ['merah', 'kuning', 'hijau']
+let [satu, ...lainnya] = colors
+console.log(satu) // merah
+console.log(lainnya) // [ 'kuning', 'hijau' ]
+```
+contoh dalam objek
+```javascript
+const user = {
+ name: 'Melodi',
+ gender: 0,
+ age: 24
+};
+let {name, ...lainnya} = user
+console.log(name) // Melodi
+console.log(lainnya) // { gender: 0, age: 24 }
+```
+## Modularisasi Javascript: Export & Import
+Ketika aplikasi kita besar dan kompleks terkadang kita perlu memecah kode menjadi beberapa file yang
+berbeda sesuai konteksnya, inilah yang kemudian disebut sebagai module.
+Mulai ES6, Javascript kemudian memperkenalkan fitur module, di mana satu module adalah satu file.
+Module dapat di-load dengan menggunakan keyword khusus yaitu export dan import.
+Keyword export digunakan untuk menandai suatu variabel dan atau fungsi yang nantinya dapat diakses
+dari luar module, sebagai contoh: buatlah file hello.js yang isinya sebagai berikut:
+
+export
+* helo.js
+```javascript
+//  hello.js
+export function hello(user) {
+ alert(`Hello, ${user}!`)
+}
+```
+import
+```javascript
+ import { hello } from './hello.js'
+ hello('Fuad') // akses fungsi hello pada module hello.
+ ```
+ Kita bisa juga mengaliaskan hasil import kita ke dalam sebuah variabel, misalnya:
+ ```javascript
+ import * as helper from './hello.js'
+helper.hello('Fuad')
+```
+Jika kita hanya mengkespor satu variabel/function per module, maka kita bisa menggunakan keyword
+default.
+```javascript
+export default function hello(user) {
+ alert(`Hello, ${user}!`)
+}
+```
+Lalu pada import menjadi sebagai berikut:
+```javascript
+import hello from './hello.js'
+hello('Fuad')
+```
+
+## Asynchronous Programming 
+### Callback
+Callback adalah salah satu metode untuk menyisipkan fungsi pada sebuah argumen fungsi lainnya untuk
+tujan dipanggil lagi dalam fungsi tersebut.
+```javascript
+function gretting(user, callback) {
+  setTimeout(() => {
+    callback(`hello ${user}`);
+  }, 2000);
+}
+gretting("fahriz", (props) => console.log(props));
+console.log("pertama");
+```
+Perhatikan bahwa argumen callback pada deklarasi fungsi merupakan fungsi callback yang mana saat
+pemanggilan bisa kita akses sebagaimana fungsi biasa (props) => console.log(props).
+Lalu, dari mana argumen props pada fungsi callback? atau apa nilainya?
+Yap, argumen props pada callback, isinya sesuai dengan deklarasinya. Karena pada deklarasi fungsi
+seperti ini callback(Selamat Pagi ${user}!) maka berarti nilai dari argumen props adalah teks
+Selamat Pagi ${user}!.
+
+contoh real case
+```javascript
+function load(url, callback) {
+  let xhr = new XMLHttpRequest();
+  xhr.onload = function () {
+    callback(this.responseText);
+  };
+  xhr.open("GET", url, true);
+  xhr.send();
+}
+load("https://jsonplaceholder.typicode.com/todos/1", (data) => {
+  document.writeln(data);
+});
+document.writeln("loading ...");
+```
+### Promise
