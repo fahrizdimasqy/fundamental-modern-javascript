@@ -67,6 +67,37 @@ const person1 = Object.freeze({
 person1.name = "Hafid";
 console.log(person1);
 ```
+### Arrow Function
+Arrow function adalah cara alternatif dalam menulis suatu fungsi pada Javascript. Cara ini diperkenalkan
+sejak ES6.
+Berikut ini sintaksnya:
+```javascript
+(argumen) => {
+ return expression
+}
+// atau versi shorthand
+(argumen) => expression
+```
+Sebelum ES6, kita menulis fungsi dengan cara sebagai berikut
+```javascript
+// fungsi tanpa argumen pada ES5
+function getPrice() {
+ return 25000
+}
+// atau bisa dengan gaya penulisan variabel
+const getPrice = function () {
+ return 25000
+}
+```
+Fungsi tersebut dapat ditulis dengan menggunakan ES6 arrow function, menjadi sebagai berikut:
+``javascript
+// ES6: arrow function
+const getPrice = () => {
+ return 25000
+}
+// atau versi shorthand (singkat) dari arrow function
+const getPrice = () => 25000
+```
 
 ```javascript
 // arrow function
@@ -91,7 +122,22 @@ const multiply = (a, b) => a * b;
 // ES6: arrow function
 const increment = (x = 1) => ++x;
 ```
-
+Apakah arrow function hanya untuk menyingkat penulisan fungsi?
+Ternyata tidak, arrow function juga menyelesaikan masalah pada ruang lingkup keyword this. Keyword
+this pada Javascript digunakan untuk menunjuk ke parent objek.
+```javascript
+const Web = {
+ teks: 'hello',
+ render: function () {
+ console.log( 'menampilkan: ' + this.teks )
+ }
+}
+console.log( Web.teks ) // hello
+Web.render() // menampilkan: hello
+```
+Objek Web pada contoh diatas memiliki satu properti yaitu teks dan satu method yaitu render. Pada
+method render, kita bisa mengakses properti teks dengan menggunakan perintah this.teks,
+dimana this mengacu pada objek Web
 ```javascript
 // reguler function
 const Web = {
@@ -107,7 +153,7 @@ Web.render();
 Objek Web pada contoh diatas memiliki satu properti yaitu teks dan satu method yaitu render. Pada
 method render, kita bisa mengakses properti teks dengan menggunakan perintah this.teks,
 dimana this mengacu pada objek Web.
-
+Bagaimana jika kodenya kita ubah menjadi sebagai berikut:
 
 ```javascript
 const Web = {
