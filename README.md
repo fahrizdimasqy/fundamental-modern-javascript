@@ -828,3 +828,497 @@ fetch
 load()
 document.writeln('loading ...')
  ```
+## This Keyword
+Perbedaan karakteristik dari arrow function dan regular function selanjutnya ada pada penggunaan keyword this. Penjelasan dari this sendiri menyusul di materi class. Namun kita akan bahas sedikit mengenai ini untuk menggambarkan perbedaan ketika this digunakan oleh arrow function dan regular function.
+Jika sebuah regular function dipanggil dengan menggunakan keyword new. Maka nilainya akan menjadi objek, contohnya:
+```javascript
+function People(name, age, hobby) {
+this.name = name;
+this.age = age;
+this.hobby = hobby;
+}
+const programmer = new People("John", 18, ["Coding", "Read book", "Ping-pong"]);
+console.log(programmer.name);
+console.log(programmer.age);
+console.log(programmer.hobby);
+/* output:
+John
+18
+[ 'Coding', 'Read book', 'Ping-pong' ]
+*/
+```
+Objek yang dibuat menggunakan function dengan keyword new, sama halnya seperti kita membuat objek seperti menggunakan objek literals { }.
+```javascript
+const programmer = {
+name: "John",
+age: 18,
+hobby: ["Coding", "Read book", "Ping-Pong"]
+}
+console.log(programmer.name);
+console.log(programmer.age);
+console.log(programmer.hobby);
+/* output:
+John
+18
+[ 'Coding', 'Read book', 'Ping-pong' ]
+*/
+```
+
+Jika sebuah regular function dipanggil dengan menggunakan keyword new. Maka nilainya akan menjadi objek, contohnya:
+## OOP
+Paradigma OOP selalu digambarkan dengan kehidupan nyata. Visualisasi di atas mencontohkan gambaran umum OOP di mana terdapat sebuah blueprint kucing, nilai yang dimiliki kucing, dan kemampuan yang dapat dilakukan olehnya. Dalam OOP blueprint tersebut dikenal dengan class (kelas), nilai yang dimiliki olehnya dikenal dengan properti, kemampuan yang dimilikinya dikenal sebagai behaviour/method dan realisasi dari sebuah blueprint tersebut disebut instance.
+
+### A Class Before ES6
+Sebelum ES6, Hal yang paling mendekati dengan class yaitu membuat sebuah objek menggunakan constructor function dan keyword new, lalu untuk menambahkan method kita gunakan konsep prototype.
+
+```javascript
+function Car(manufacture, color) {
+this.manufacture = manufacture;
+this.color = color;
+this.enginesActive = false;
+}
+Car.prototype.startEngines = function () {
+console.log('Mobil dinyalakan...');
+this.enginesActive = true;
+};
+Car.prototype.info = function () {
+console.log("Manufacture: " + this.manufacture);
+console.log("Color: " + this.color);
+console.log("Engines: " + this.manufacture ? "Active" : "Inactive");
+}
+var johnCar = new Car("Honda", "Red");
+johnCar.startEngines();
+johnCar.info();
+/* output:
+Mobil dinyalakan...
+Manufacture: Honda
+Color: Red
+Engines active: true
+*/
+```
+Pada kode di atas Car merupakan constructor function yang akan membuat instance Car baru setiapkan kode new Car() dieksekusi. Melalui Car.prototype, method startEngines() dan carInfo() diwarisi pada setiap instance Car yang dibuat, sehingga johnCar (sebagai instance Car) dapat mengakses kedua method tersebut. Teknik dasar ini yang digunakan dalam membuat class di JavaScript sebelum ES6.
+
+ES6 Classes
+Dengan hadirnya class pada ES6, pembuatan class di JavaScript menjadi lebih mudah dan juga penulisannya mirip seperti bahasa pemrograman lain berbasis class. Pembuatan class pada ES6 menggunakan keyword class itu sendiri kemudian diikuti dengan nama class-nya.
+```javascript
+class Car {
+// Sama seperti function constructor
+constructor(manufacture, color) {
+this.manufacture = manufacture;
+this.color = color;
+this.enginesActive = false;
+}
+// Sama seperti Car.prototype.startEngine
+startEngines() {
+console.log('Mobil dinyalanakan...');
+this.enginesActive = true;
+}
+// Sama seperti car.prototype.info
+info() {
+console.log(`Manufacture: ${this.manufacture}`);
+console.log(`Color: ${this.color}`);
+console.log(`Engines: ${this.manufacture ? "Active" : "Inactive"}`);
+}
+}
+const johnCar = new Car("Honda", "Red");
+johnCar.startEngines();
+johnCar.info();
+/* output:
+Mobil dinyalanakan...
+Manufacture: Honda
+Color: Red
+engines active: true
+```
+### Constructor
+Jika Anda terbiasa dengan bahasa pemrograman berbasis class, pasti penulisannya sangat serupa bukan? Walaupun dari segi sintaksis pembuatan class antara keduanya cukup berbeda, namun perilaku dari objek yang dibuat dengan keduanya sama. Inilah mengapa class pada ES6 hanya sebuah syntactic sugar dari konsep prototype yang sudah ada.
+
+### Constructor
+Deklarasi class menggunakan ES6 memiliki sifat yang sama seperti pembuatan class menggunakan function constructor (seperti contoh sebelumnya). Namun alih-alihmenggunakan function constructordalam menginisialisasi propertinya, class ini memisahkan constructornya dan ditempatkan pada body class menggunakan method spesial yang dinamakan constructor.
+```javascript
+class Car {
+constructor(manufacture, color) {
+this.manufacture = manufacture;
+this.color = color;
+this.enginesActive = false;
+}
+}
+```
+constructor biasanya hanya digunakan untuk menetapkan nilai awal pada properti berdasarkan nilai yang dikirimkan pada constructor. Namun sebenarnya kita juga dapat menuliskan logika di dalam constructor jika memang kita memerlukan beberapa kondisi sebelum nilai properti diinisialisasi.constructor biasanya hanya digunakan untuk menetapkan nilai awal pada properti berdasarkan nilai yang dikirimkan pada constructor. Namun sebenarnya kita juga dapat menuliskan logika di dalam constructor jika memang kita memerlukan beberapa kondisi sebelum nilai properti diinisialisasi. Kita juga melihat penggunaan this pada constructor. Konteks dalam class, keyword this merujuk pada instance dari class tersebut. Sehingga this dapat digunakan untuk mengelola properti yang terdapat pada instance.
+
+Kita juga melihat penggunaan this pada constructor. Konteks dalam class, keyword this merujuk pada instance dari class tersebut. Sehingga this dapat digunakan untuk mengelola properti yang terdapat pada instance.
+
+### Instance
+Setelah kita membuat class pada JavaScript, lantas bagaimana cara membuat instance dari class tersebut? Tapi sebelumnya, apa itu instance? Instance merupakan objek yang memiliki properti dan method yang telah ditentukan oleh blueprint-nya (class), atau singkatnya adalah objek yang merupakan hasil realisasi dari sebuah blueprint.
+
+Sama seperti constructor function, untuk membuat instance dari class pada ES6 kita gunakan keyword new.
+```javascript
+class Car {
+constructor(manufacture, color) {
+this.manufacture = manufacture;
+this.color = color;
+this.enginesActive = false;
+}
+}
+const johnCar = new Car("Honda", "Red");
+```
+Pembuatan class menggunakan ES6 lebih ketat dibandingkan dengan constructor function, di mana dalam pembuatan instance wajib menggunakan keyword new.
+
+Kita juga dapat membuat banyak instance dari class yang sama, dan tentunya objek yang kita buat memiliki karakteristik (properti dan method) yang sama. Walaupun sama, namun nilai dari propertinya bersifat unik atau bisa saja berbeda.
+```javascript
+class Car {
+constructor(manufacture, color) {
+this.manufacture = manufacture;
+this.color = color;
+this.enginesActive = false;
+}
+}
+const johnCar = new Car("Honda", "Red");
+const adamCar = new Car("Tesla", "Black");
+console.log(johnCar.manufacture);
+console.log(adamCar.manufacture);
+/* output:
+Honda
+Tesla
+*/
+```
+Variabel johnCar dan adamCar merupakan sebuah objek dari Car. Tentu keduanya akan memiliki properti manufacture, color, dan enginesActive. Namun pada output kita melihat bahwa nilai dari properti kedua objek tersebut berbeda, karena kita dapat memberikan nilai yang berbeda pada saat objeknya dibuat.
+
+Property Accessor
+Melalui objek class kita juga dapat mengubah nilai properti seperti ini:
+```javascript
+class Car {
+constructor(manufacture, color) {
+this.manufacture = manufacture;
+this.color = color;
+this.enginesActive = false;
+}
+}
+const johnCar = new Car("Honda", "Red");
+console.log(`Warna mobil: ${johnCar.color}`); // output -> Warna Mobil: Red
+johnCar.color = "White"; // Mengubah nilai properti color menjadi white
+console.log(`Warna mobil: ${johnCar.color}`); // output -> Warna Mobil: White
+```
+Dengan class kita juga dapat mengimplementasi getter/setter sebuah properti menjadi sebuah method seperti ini:
+```javascript
+class Car {
+constructor(manufacture, color) {
+this.manufacture = manufacture;
+this._color = color;
+this.enginesActive = false;
+}
+get color() {
+return `Warna mobile ${this._color}`;
+}
+set color(value) {
+console.log(`Warna mobil diubah dari ${this._color} menjadi ${value}`);
+this._color = value;
+}
+}
+const johnCar = new Car("Honda", "Red");
+console.log(johnCar.color); // output -> Warna Mobil: Red
+johnCar.color = "White"; // Mengubah nilai properti color menjadi white
+console.log(johnCar.color); // output -> Warna Mobil: White
+```
+Perhatikan juga ketika kita menerapkan getter/setter pada properti class. Kita perlu mengubah atau membedakan penamaan properti aslinya dengan property accessor yang kita buat. Berdasarkan code convention yang ada kita perlu mengubah properti asli class-nya dengan menambahkan underscore di depan nama propertinya (_color). Tanda underscore berfungsi sebagai tanda bahwa properti _color tidak sebaiknya diakses langsung, namun harus melalui property accessor(getter/setter).
+
+
+### Method
+Untuk menambahkan method pada class, kita juga cukup menuliskannya pada body class, tidak perlu melalui prototype seperti menggunakan constructor function.
+```javascript
+class Car {
+constructor(manufacture, color) {
+this.manufacture = manufacture;
+this.color = color;
+this.enginesActive = false;
+}
+startEngines() {
+console.log("Mesin dinyalakan");
+this.enginesActive = true;
+}
+info() {
+console.log(`Manufacture: ${this.manufacture}`);
+console.log(`Color: ${this.color}`);
+console.log(`Engines: ${this.manufacture ? "Active" : "Inactive"}`);}
+}
+const johnCar = new Car("Honda", "Red");
+johnCar.startEngines();
+johnCar.info();
+/* output:
+Mesin dinyalakan
+Manufacture: Honda
+Color: Red
+Engines: Active
+*/
+```
+Dengan menggunakan class, walaupun kita menuliskan method pada body class, namun method tersebut tetap berada pada prototype chain miliki instance yang terbuat. Kita bisa melihat bagaimana objek yang dibuat menggunakan class pada console browser.
+
+### Inheritance
+Dalam gambaran dunia nyata, banyak objek yang berbeda tetapi punya kesamaan atau kemiripan tertentu. Contohnya mobil dengan motor memiliki banyak kesamaan karena objek tersebut merupakan kendaraan. Mobil merupakan kendaraan darat begitu juga dengan motor. Mungkin yang membedakan objek tersebut adalah jumlah roda dan kapasitas penumpang yang dapat ditampung.
+
+Sama halnya pada OOP, beberapa objek yang berbeda bisa saja memiliki kesamaan dalam hal tertentu. Di situlah konsep inheritance atau pewarisan harus diterapkan. Pewarisan dapat mencegah kita melakukan perulangan kode.
+
+Dengan teknik inheritance, kita bisa mengelompokkan properti dan method yang sama. Caranya dengan membuat sebuah kelas baru yang nantinya akan diturunkan sifatnya pada
+
+Ketika class Vehicle telah dibuat, kelas lainnya dapat melakukan extends pada kelas tersebut untuk mewarisi sifatnya. Dalam pewarisan, class Vehicle dapat disebut sebagai super atau parent class. Kelas yang mewarisi sifat dari parent class disebut dengan child class.
+```javascript
+class Vechile {
+            constructor(licensePlate, manufacture) {
+                this.licensePlate = licensePlate;
+                this.manufacture = manufacture;
+                this.engineActive = false;
+            }
+            startEnggines() {
+                console.log(`Mesin kendaraan ${this.licensePlate} dinyalakan!`);
+            }
+
+            info() {
+                console.log(`Nomor Kendaraan: ${this.licensePlate}`);
+                console.log(`Manufacture: ${this.manufacture}`);
+                console.log(`Mesin: ${this.engineActive ? "Active": "Inactive"}`);
+            }
+
+            parking() {
+                console.log(`Kendaraan ${this.licensePlate} parkir!`);
+            }
+        }
+        class Car extends Vechile {
+            constructor(lisencePlate, manufacture, wheels) {
+                super(lisencePlate, manufacture);
+                this.wheels = wheels;
+            }
+            droveOff() {
+                console.log(`Kendaraan ${this.licensePlate} melaju!`);
+            }
+            openDoor() {
+                console.log(`Membuka pintu!`);
+            }
+
+        }
+        const car = new Car("hahaha", "honda", 4);
+        car.startEnggines();
+```
+Dalam melakukan pewarisan kelas, tidak ada tingkatan yang membatasinya. Maksudnya, kita dapat mewariskan sifat kelas A pada kelas B, lalu kelas B mewarisi sifatnya kembali pada kelas C dan selanjutnya. Sama halnya dengan Nenek kita mewarisi sifatnya kepada orang tua kita kemudian orang tua kita mewarisi sifatnya kepada kita.
+
+Static Method
+Seluruh kendaraan pasti butuh yang namanya perawatan bukan? Jika iya, tentu kita perlu membuat method repair untuk memperbaiki kendaraan tersebut. Dalam analogi dunia nyata, ketika kendaraan mengalami kerusakan maka kendaraan tersebut akan diperbaiki di bengkel (factory), sehingga kita perlu membuat class baru yang berperan sebagai factory, sebutlah class tersebut VehicleFactory. Di dalam kelas VehicleFactory terdapat satu method repair() yang dapat menerima banyak kendaraan sebagai parameternya.
+
+sebelum ada static method
+```javascript
+class Vehicle {
+constructor(licensePlate, manufacture) {
+this.licensePlate = licensePlate;
+this.manufacture = manufacture;
+this.engineActive = false;
+}
+/*
+kode lainnya
+*/
+}
+/* kode lainnya dalam pembuatan class Car,
+Motorcycle, dsb. */
+class VehicleFactory {
+repair(vehicles) {
+vehicles.forEach(vehicle => {
+console.log(`Kendaraan ${vehicle.licensePlate} sedang melakukan perawatan`)
+})
+}
+}
+const johnCar = new Car("H121S", "Honda", 4);
+const dimasCar = new Car("TA1408K", "Tesla", 4);
+/* Membuat instance untuk memanggil fungsi repair */
+const vehicleFactory = new VehicleFactory();
+vehicleFactory.repair([johnCar, dimasCar]);
+```
+Static method merupakan method yang tidak dapat dipanggil oleh instance dari class, namun dapat dipanggil melalui class-nya sendiri.
+```javascript
+class Vehicle {
+constructor(licensePlate, manufacture) {
+this.licensePlate = licensePlate;
+this.manufacture = manufacture;
+this.engineActive = false;
+}
+/*
+kode lainnya
+*/
+}
+/* kode lainnya dalam pembuatan class Car,
+Motorcycle, dsb. */
+class VehicleFactory {
+static repair(vehicles) {
+vehicles.forEach(vehicle => {
+console.log(`Kendaraan ${vehicle.licensePlate} sedang melakukan perawatan`)
+})
+}
+}
+lass VehicleFactory {
+static repair(vehicles) {
+vehicles.forEach(vehicle => {
+console.log(`Kendaraan ${vehicle.licensePlate} sedang melakukan perawatan`)
+})
+}
+}
+const johnCar = new Car("H121S", "Honda", 4);
+const dimasCar = new Car("TA1408K", "Tesla", 4);
+/* Pemanggilan method repair langsung dari class-nya */
+VehicleFactory.repair([johnCar, dimasCar]);
+```
+
+Web Component
+Web component merupakan salah satu fitur yang ditetapkan standar World Wide Web Consortium (W3C). Fitur ini memudahkan developer dalam membuat komponen UI websitenya menjadi lebih modular.
+
+Web component bersifat reusable. Bahkan dapat digunakan walaupun kita menggunakan framework sekalipun. Apa pasal? Web component dibangun tak lain menggunakan JS/HTML/CSS murni. Terdapat dua API penting dalam menerapkan web component, yakni:
+
+Custom Elements: Digunakan untuk membuat elemen baru (custom element). Kita juga bisa menentukan perilaku element tersebut sesuai kebutuhan.
+
+Shadow DOM: Digunakan untuk membuat HTML element terenkapsulasi dari gangguan luar. Biasanya digunakan pada custom element, agar elemen tersebut tidak terpengaruh oleh styling yang ditetapkan di luar dari custom elemen-nya.
+
+Custom Element
+HTML memberikan kemudahan dalam mengatur struktur website.
+
+HTMLElement merupakan interface yang merepresentasikan
+HTMLElement merupakan interface yang merepresentasikan element HTML. Interface ini biasanya diterapkan pada class JavaScript sehingga terbentuklah element HTML baru melalui class tersebut (custom element).
+
+class ImageFigure extends HTMLElement {
+}
+customElements.define("image-figure", ImageFigure);
+customElements merupakan global variable yang digunakan untuk mendefinisikan custom elementdan memberitahu bahwa terdapat HTML tag baru. Di dalam customElements terdapat method yang bernama define(). Di sinilah kita meletakan tag name baru kemudian diikuti dengan JavaScript class yang menerapkan sifat HTMLElement.
+
+Setelah mendefinisikan custom element, barulah ia siap digunakan pada berkas HTML. Kita cukup menuliskan tagnya layaknya elemen HTML biasa.
+
+<image-figure></image-figure>
+Jangan lupa lampirkan script pada berkas yang digunakan untuk menuliskan class ImageFigure.
+
+<script src="image-figure.js"></script>
+Berikut kode lengkapnya:
+
+index.html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>My First Custom Element</title>
+</head>
+<body>
+<image-figure></image-figure>
+<script src="image-figure.js"></script>
+</body>
+</html>
+class ImageFigure extends HTMLElement {}
+customElements.define("image-figure", ImageFigure);
+Life Cycle of Custom Element
+Ketika sebuah JavaScript class mewarisi sifat dari HTMLElement maka class tersebut akan memiliki siklus hidup layaknya sebuah elemen HTML. Kita dapat menerapkan logika pada setiap siklus hidup yang ada dengan memanfaatkanlifecycle callbacks yang ada. Berikut ini lifecycle callbacks yang ada pada HTMLElemen
+
+connectedCallback() : Akan terpanggil setiap kali elemen berhasil ditambahkan ke dokumen HTML (DOM). Callback ini merupakan tempat yang tepat untuk menjalankan konfigurasi awal seperti mendapatkan data, atau mengatur attribute.
+
+disconnectedCallback() : Akan terpanggil setiap kali elemen dikeluarkan (remove()) dari DOM. Callback ini merupakan tempat yang tepat untuk membersihkan data yang masih disimpan pada elemen. Bisa itu event, state, ataupun objek.
+
+attributeChangedCallback() : Akan terpanggil setiap kali nilai atribut yang di- observe melalui fungsi static get observedAttributes diubah. Callback ini bisa kita manfaatkan untuk memuat ulang data yang ditampilkan oleh elemen.
+
+adoptedCallback() : Akan terpanggil setiap kali elemen dipindahkan pada dokumen baru. Kita relatif jarang menggunakan callback ini, namun jika kita memanfaatkan tag <iframe> maka callback ini akan terpanggil.
+
+Ketika kita mengimplementasikan constructor pada custom element, kita wajib memanggil method super(). Jika tidak, maka akan menghasilkan error:
+
+ReferenceError: Must call super constructor in derived class before accessing '
+this' or returning from derived constructor
+Terdapat dua cara membuat instance dari custom element. Yang pertama adalah menggunakan nama tagnya langsung yang dituliskan pada kode HTML. Contohnya:
+
+<body>
+<image-figure></image-figure>
+</body>
+Lalu cara kedua adalah dengan menggunakan sintaks JavaScript. Sama seperti membuat element HTML biasa, kita gunakan method document.createElement dalam membuat elemen baru.
+
+const imageFigureElement = document.createElement("image-figure");
+document.body.appendChild(imageFigureElement
+index.html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>Element life cycle</title>
+</head> 
+<body>
+<image-figure></image-figure>
+<script src="my-custom-element.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
+image-figure.js
+class ImageFigure extends HTMLElement {
+constructor() {
+super();
+console.log("constructed!")
+}
+connectedCallback() {
+console.log("connected!");
+}
+disconnectedCallback() {
+console.log("disconnected!");
+}
+adoptedCallback() {
+console.log("adopted!");
+}
+attributeChangedCallback(name, oldValue, newValue) {
+console.log(`Attribute: ${name} changed!`);
+}
+static get observedAttributes() {
+return ["caption"];
+}
+}
+customElements.define("image-figure", ImageFigure);
+main.js
+let imageFigureElement = document.querySelector("image-figure");
+if (!imageFigureElement) {
+imageFigureElement = document.createElement("image-figure");
+document.body.appendChild(imageFigureElement);
+}
+setTimeout(() => {
+imageFigureElement.setAttribute("caption", "Gambar 1");
+}, 1000);
+setTimeout(() => {
+imageFigureElement.remove();
+ }, 3000);
+Implementasi lifecycle callback pada custom element bersifat opsional. Kita tidak perlu menuliskannya jika memang tidak diperlukan.
+
+Implementasi lifecycle callback pada custom element bersifat opsional. Kita tidak perlu menuliskannya jika memang tidak diperlukan.
+
+Custom element attribute and method
+Fetch Basic Usage
+Seperti yang sudah kita ketahui, fetch memanfaatkan promise dalam melakukan tugasnya, sehingga network request yang dibuat menggunakan fetch akan selalu berjalan asynchronous.
+
+Network request dilakukan pada saat fungsi fetch() tereksekusi.
+
+fetch('http://example.com/movies.json')
+  .then(response => response.json())
+  .then(data => console.log(data));
+  catch (error => {
+    console.log(error)});
+fetch("https://web-server-book-dicoding.appspot.com/list")
+Jika request berhasil diproses oleh server, fungsi fetch() akan mengembalikan promise resolve dan membawa response object di dalamnya. Namun nilai response yang dibawa resolve belum sebagai data JSON yang kita butuhkan, melainkan informasi mengenai response itu sendiri, seperti status code, target url, headers, dsb. Maka dari itu, untuk mendapatkan data JSON yang dibutuhkan, kita perlu mengubah response object ke dalam bentuk JSON dengan memanggil method .json().
+
+fetch('http://example.com/movies.json')
+  .then(response => response.json())
+Method .json() juga mengembalikan nilai Promise, sehingga kita membutuhkan chaining promisedengan menambahkan .then() untuk mendapatkan data JSON yang sesungguhnya.
+
+fetch('http://example.com/movies.json')
+  .then(response => response.json())
+  .then(data => console.log(data));
+Lalu jangan lupa juga untuk menambahkan block catch() pada akhir chaining promise untuk menangani apabila rejected promise terjadi baik karena fungsi fetch() atau json().
+
+fetch('http://example.com/movies.json')
+  .then(response => response.json())
+  .then(data => console.log(data));
+  catch (error => {
+    console.log(error)});
+fetch Asycn/await
+async function getBooks() {
+try {
+    const response = await fetch("https://web-server-book-dicoding.appspot.com/list");
+    const responseJson = await response.json();
+    console.log(responseJson);
+} catch (error) {
+console.log(error);
+    }
+}
+getBooks();
