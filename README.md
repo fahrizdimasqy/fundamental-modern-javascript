@@ -898,7 +898,7 @@ Engines active: true
 ```
 Pada kode di atas Car merupakan constructor function yang akan membuat instance Car baru setiapkan kode new Car() dieksekusi. Melalui Car.prototype, method startEngines() dan carInfo() diwarisi pada setiap instance Car yang dibuat, sehingga johnCar (sebagai instance Car) dapat mengakses kedua method tersebut. Teknik dasar ini yang digunakan dalam membuat class di JavaScript sebelum ES6.
 
-ES6 Classes
+### ES6 Classes
 Dengan hadirnya class pada ES6, pembuatan class di JavaScript menjadi lebih mudah dan juga penulisannya mirip seperti bahasa pemrograman lain berbasis class. Pembuatan class pada ES6 menggunakan keyword class itu sendiri kemudian diikuti dengan nama class-nya.
 ```javascript
 class Car {
@@ -929,8 +929,6 @@ Manufacture: Honda
 Color: Red
 engines active: true
 ```
-### Constructor
-Jika Anda terbiasa dengan bahasa pemrograman berbasis class, pasti penulisannya sangat serupa bukan? Walaupun dari segi sintaksis pembuatan class antara keduanya cukup berbeda, namun perilaku dari objek yang dibuat dengan keduanya sama. Inilah mengapa class pada ES6 hanya sebuah syntactic sugar dari konsep prototype yang sudah ada.
 
 ### Constructor
 Deklarasi class menggunakan ES6 memiliki sifat yang sama seperti pembuatan class menggunakan function constructor (seperti contoh sebelumnya). Namun alih-alihmenggunakan function constructordalam menginisialisasi propertinya, class ini memisahkan constructornya dan ditempatkan pada body class menggunakan method spesial yang dinamakan constructor.
@@ -1163,7 +1161,7 @@ const dimasCar = new Car("TA1408K", "Tesla", 4);
 VehicleFactory.repair([johnCar, dimasCar]);
 ```
 
-Web Component
+### Web Component
 Web component merupakan salah satu fitur yang ditetapkan standar World Wide Web Consortium (W3C). Fitur ini memudahkan developer dalam membuat komponen UI websitenya menjadi lebih modular.
 
 Web component bersifat reusable. Bahkan dapat digunakan walaupun kita menggunakan framework sekalipun. Apa pasal? Web component dibangun tak lain menggunakan JS/HTML/CSS murni. Terdapat dua API penting dalam menerapkan web component, yakni:
@@ -1172,26 +1170,30 @@ Custom Elements: Digunakan untuk membuat elemen baru (custom element). Kita juga
 
 Shadow DOM: Digunakan untuk membuat HTML element terenkapsulasi dari gangguan luar. Biasanya digunakan pada custom element, agar elemen tersebut tidak terpengaruh oleh styling yang ditetapkan di luar dari custom elemen-nya.
 
-Custom Element
+### Custom Element
 HTML memberikan kemudahan dalam mengatur struktur website.
 
 HTMLElement merupakan interface yang merepresentasikan
 HTMLElement merupakan interface yang merepresentasikan element HTML. Interface ini biasanya diterapkan pada class JavaScript sehingga terbentuklah element HTML baru melalui class tersebut (custom element).
-
+```javascript
 class ImageFigure extends HTMLElement {
 }
 customElements.define("image-figure", ImageFigure);
+```
 customElements merupakan global variable yang digunakan untuk mendefinisikan custom elementdan memberitahu bahwa terdapat HTML tag baru. Di dalam customElements terdapat method yang bernama define(). Di sinilah kita meletakan tag name baru kemudian diikuti dengan JavaScript class yang menerapkan sifat HTMLElement.
 
 Setelah mendefinisikan custom element, barulah ia siap digunakan pada berkas HTML. Kita cukup menuliskan tagnya layaknya elemen HTML biasa.
-
+```javascript
 <image-figure></image-figure>
+```
 Jangan lupa lampirkan script pada berkas yang digunakan untuk menuliskan class ImageFigure.
-
+```
 <script src="image-figure.js"></script>
+```
 Berikut kode lengkapnya:
 
-index.html
+* index.html
+```
 <!DOCTYPE html>
 <html>
 <head>
@@ -1204,33 +1206,44 @@ index.html
 <script src="image-figure.js"></script>
 </body>
 </html>
+```
+```javascript
 class ImageFigure extends HTMLElement {}
 customElements.define("image-figure", ImageFigure);
+```
+Coba jalankan kode di atas pada browser, kita tidak akan mendapatkan apapun.
+Sampai saat ini, element <image-figure> berperan layaknya
+element <div> ataupun <span> yang tidak memiliki fungsi khusus. Karena kita
+belum menetapkan seperti apa jadinya element baru ini.
+  
 Life Cycle of Custom Element
 Ketika sebuah JavaScript class mewarisi sifat dari HTMLElement maka class tersebut akan memiliki siklus hidup layaknya sebuah elemen HTML. Kita dapat menerapkan logika pada setiap siklus hidup yang ada dengan memanfaatkanlifecycle callbacks yang ada. Berikut ini lifecycle callbacks yang ada pada HTMLElemen
 
-connectedCallback() : Akan terpanggil setiap kali elemen berhasil ditambahkan ke dokumen HTML (DOM). Callback ini merupakan tempat yang tepat untuk menjalankan konfigurasi awal seperti mendapatkan data, atau mengatur attribute.
+* connectedCallback() : Akan terpanggil setiap kali elemen berhasil ditambahkan ke dokumen HTML (DOM). Callback ini merupakan tempat yang tepat untuk menjalankan konfigurasi awal seperti mendapatkan data, atau mengatur attribute.
 
-disconnectedCallback() : Akan terpanggil setiap kali elemen dikeluarkan (remove()) dari DOM. Callback ini merupakan tempat yang tepat untuk membersihkan data yang masih disimpan pada elemen. Bisa itu event, state, ataupun objek.
+* disconnectedCallback() : Akan terpanggil setiap kali elemen dikeluarkan (remove()) dari DOM. Callback ini merupakan tempat yang tepat untuk membersihkan data yang masih disimpan pada elemen. Bisa itu event, state, ataupun objek.
 
-attributeChangedCallback() : Akan terpanggil setiap kali nilai atribut yang di- observe melalui fungsi static get observedAttributes diubah. Callback ini bisa kita manfaatkan untuk memuat ulang data yang ditampilkan oleh elemen.
+* attributeChangedCallback() : Akan terpanggil setiap kali nilai atribut yang di- observe melalui fungsi static get observedAttributes diubah. Callback ini bisa kita manfaatkan untuk memuat ulang data yang ditampilkan oleh elemen.
 
-adoptedCallback() : Akan terpanggil setiap kali elemen dipindahkan pada dokumen baru. Kita relatif jarang menggunakan callback ini, namun jika kita memanfaatkan tag <iframe> maka callback ini akan terpanggil.
+* adoptedCallback() : Akan terpanggil setiap kali elemen dipindahkan pada dokumen baru. Kita relatif jarang menggunakan callback ini, namun jika kita memanfaatkan tag <iframe> maka callback ini akan terpanggil.
 
 Ketika kita mengimplementasikan constructor pada custom element, kita wajib memanggil method super(). Jika tidak, maka akan menghasilkan error:
 
 ReferenceError: Must call super constructor in derived class before accessing '
 this' or returning from derived constructor
 Terdapat dua cara membuat instance dari custom element. Yang pertama adalah menggunakan nama tagnya langsung yang dituliskan pada kode HTML. Contohnya:
-
+```
 <body>
 <image-figure></image-figure>
 </body>
+```
 Lalu cara kedua adalah dengan menggunakan sintaks JavaScript. Sama seperti membuat element HTML biasa, kita gunakan method document.createElement dalam membuat elemen baru.
-
+```javascript
 const imageFigureElement = document.createElement("image-figure");
 document.body.appendChild(imageFigureElement
-index.html
+```
+* index.html
+```
 <!DOCTYPE html>
 <html>
 <head>
@@ -1244,7 +1257,9 @@ index.html
 <script src="main.js"></script>
 </body>
 </html>
-image-figure.js
+```
+* image-figure.js
+```javascript
 class ImageFigure extends HTMLElement {
 constructor() {
 super();
@@ -1267,7 +1282,9 @@ return ["caption"];
 }
 }
 customElements.define("image-figure", ImageFigure);
-main.js
+```
+* main.js
+```javascript
 let imageFigureElement = document.querySelector("image-figure");
 if (!imageFigureElement) {
 imageFigureElement = document.createElement("image-figure");
@@ -1279,33 +1296,39 @@ imageFigureElement.setAttribute("caption", "Gambar 1");
 setTimeout(() => {
 imageFigureElement.remove();
  }, 3000);
+```
 Implementasi lifecycle callback pada custom element bersifat opsional. Kita tidak perlu menuliskannya jika memang tidak diperlukan.
 
 Implementasi lifecycle callback pada custom element bersifat opsional. Kita tidak perlu menuliskannya jika memang tidak diperlukan.
 
-Custom element attribute and method
-Fetch Basic Usage
+### Custom element attribute and method
+
+### Fetch Basic Usage
 Seperti yang sudah kita ketahui, fetch memanfaatkan promise dalam melakukan tugasnya, sehingga network request yang dibuat menggunakan fetch akan selalu berjalan asynchronous.
 
 Network request dilakukan pada saat fungsi fetch() tereksekusi.
-
+```javascript
 fetch('http://example.com/movies.json')
   .then(response => response.json())
   .then(data => console.log(data));
   catch (error => {
     console.log(error)});
 fetch("https://web-server-book-dicoding.appspot.com/list")
+```
 Jika request berhasil diproses oleh server, fungsi fetch() akan mengembalikan promise resolve dan membawa response object di dalamnya. Namun nilai response yang dibawa resolve belum sebagai data JSON yang kita butuhkan, melainkan informasi mengenai response itu sendiri, seperti status code, target url, headers, dsb. Maka dari itu, untuk mendapatkan data JSON yang dibutuhkan, kita perlu mengubah response object ke dalam bentuk JSON dengan memanggil method .json().
 
+```javascript
 fetch('http://example.com/movies.json')
   .then(response => response.json())
+  ```
 Method .json() juga mengembalikan nilai Promise, sehingga kita membutuhkan chaining promisedengan menambahkan .then() untuk mendapatkan data JSON yang sesungguhnya.
-
+```javascript
 fetch('http://example.com/movies.json')
   .then(response => response.json())
   .then(data => console.log(data));
+  ```
 Lalu jangan lupa juga untuk menambahkan block catch() pada akhir chaining promise untuk menangani apabila rejected promise terjadi baik karena fungsi fetch() atau json().
-
+```javascript
 fetch('http://example.com/movies.json')
   .then(response => response.json())
   .then(data => console.log(data));
@@ -1322,3 +1345,4 @@ console.log(error);
     }
 }
 getBooks();
+```
