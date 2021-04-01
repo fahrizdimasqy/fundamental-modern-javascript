@@ -828,6 +828,63 @@ fetch
 load()
 document.writeln('loading ...')
  ```
+ ### Async-Await Syntax
+ ```javascript
+const getCoffee = () => {
+            return new Promise((resolve, reject) => {
+                const seeds = 100;
+                setTimeout(() => {
+                    if (seeds >= 10) {
+                        resolve("Coffee didapatkan!");
+                    } else {
+                        reject("Biji kopi habis!")
+                    }
+                }, 1000)
+            })
+        }
+
+        async function makeCoffee() {
+            const coffee = await getCoffee();
+            console.log(coffee);
+        }
+        makeCoffee();
+        ```
+Keyword async digunakan untuk memberitahu JavaScript untuk menjalankan fungsi makeCoffee()secara asynchronous. Lalu keyword await digunakan untuk menghentikan proses pembacaan kode selanjutnya sampai fungsi getCoffee() mengembalikan nilai promise resolve.
+
+“Walaupun await menghentikan proses pembacaan kode selanjutnya pada fungsi makeCoffee. Tapi ini tidak akan mengganggu proses runtime sesungguhnya pada JavaScript (global). Karena fungsi makeCoffee berjalan secara asynchronous. Kita tidakdapat menggunakan await tanpa membuat function dalam scope-nya berjalan secara asynchronous.”
+
+Handle onRejected using async/await
+Perlu jadi catatan bahwa await hanya akan mengembalikan nilai jika promise berhasil dilakukan (onFulfilled). Lantas bagaimana jika promise gagal dilakukan (onRejected)? Kembali lagi kepada prinsip synchronous code. Kita dapat menangani sebuah eror atau tolakan dengan menggunakan try...catch.
+
+Ketika menggunakan async/await, biasakan ketika mendapatkan resolved value dari sebuah promise, untuk menempatkannya di dalam block try
+```javascript
+const getCoffee = () => {
+            return new Promise((resolve, reject) => {
+                const seeds = 9;
+                setTimeout(() => {
+                    if (seeds >= 10) {
+                        resolve("Coffee didapatkan!");
+                    } else {
+                        reject("Biji kopi habis!")
+                    }
+                }, 1000)
+            })
+        }
+
+        async function makeCoffee() {
+            try{
+            const coffee = await getCoffee();
+            console.log(coffee);
+            } catch(rejectedReason) {
+              console.log(rejectedReason);
+            }
+        }
+        makeCoffee();
+        /* output
+        Biji kopi habis!
+        */
+        ```
+
 ## This Keyword
 Perbedaan karakteristik dari arrow function dan regular function selanjutnya ada pada penggunaan keyword this. Penjelasan dari this sendiri menyusul di materi class. Namun kita akan bahas sedikit mengenai ini untuk menggambarkan perbedaan ketika this digunakan oleh arrow function dan regular function.
 Jika sebuah regular function dipanggil dengan menggunakan keyword new. Maka nilainya akan menjadi objek, contohnya:
