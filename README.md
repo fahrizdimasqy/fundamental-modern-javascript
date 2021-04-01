@@ -791,6 +791,128 @@ Method then dipanggil dua kali karena fitur fetch akan mengembalikan response da
 Nah untuk mengubahnya menjadi format JSON maka kita bisa gunakan method json() yang
 mengembalikan promise juga sehingga kita gunakan method then yang kedua untuk mendapatkan data
 response dalam format JSON.
+
+
+### Promise
+Fitur ini berfungsi seperti namanya, yaitu untuk membuat janji. Mari kita analogikan kembali dalam dunia nyata. Ketika kita memesan kopi kepada pelayan, maka secara tidak langsung pelayan tersebut berjanji kepada kita untuk membuatkan kopi kemudian menghidangkannya pada kita. Namun janji bisa hanya tinggal janji. Dalam dunia nyata pun, janji bisa juga tidak terpenuhi, entah itu karena kopi pesanan kita sedang kosong, atau mesin pembuat kopi itu sedang rusak.
+
+Nah, Promise memiliki perilaku yang sama dengan analogi yang digambarkan tadi. Dalam promise terdapat 3 (tiga) kondisi, yakni:
+
+Pending (Janji sedang dalam proses)
+Fulfilled (Janji terpenuhi)
+Rejected (Janji gagal terpenuhi)
+Situs MDN mengatakan Promise merupakan sebuah objek yang digunakan untuk membuat sebuah perhitungan (kode) ditangguhkan dan berjalan secara asynchronous. Untuk membuat objek promise, kita gunakan keyword new diikuti dengan constructor dari Promise:
+
+const coffee = new Promise();
+Namun jika kita jalankan kode tersebut, akan mengakibatkan eror seperti ini:
+
+/* ERROR: Promise resolver undefined is not a function */
+Di dalam constructor Promise kita perlu menetapkan resolver function atau bisa disebut executor function di mana fungsi tersebut akan dijalankan secara otomatis ketika constructor Promise dipanggil.
+``javascript
+const executorFunction = (resolve, reject) => {
+const isCoffeeMakerReady = true;
+if(isCoffeeMakerReady) {
+resolve("Kopi berhasil dibuat");
+} else {
+reject("Mesin Kopi tidak bisa digunakan!")
+}
+}
+const makeCoffee = new Promise(executorFunction);
+console.log(makeCoffee);
+/* output:
+Promise { 'Kopi berhasil dibuat' }
+*/
+```
+Executor function dapat memiliki dua parameter, yang berfungsi sebagai resolve() dan reject()function. Berikut penjelasan detailnya:
+
+resolve() merupakan parameter pertama pada executor function. Parameter ini merupakan fungsi yang dapat menerima satu parameter, biasanya kita gunakan untuk mengirimkan data ketika promise berhasil dilakukan. Ketika fungsi ini terpanggil, kondisi Promise akan berubah dari pending menjadi fulfilled.
+
+reject() merupakan parameter kedua pada executor function. Parameter ini merupakan fungsi yang dapat menerima satu parameter yang digunakan untuk memberikan alasan mengapa Promise tidak dapat terpenuhi. Ketika fungsi ini terpanggil, kondisi Promise akan berubah dari pending menjadi rejected.
+
+Executor function akan berjalan secara asynchronous hingga akhirnya kondisi Promise berubah dari pending menjadi fulfilled/rejected. Pada contoh kode di atas, berikut ini outputnya:
+
+/* output:
+Promise { 'Kopi berhasil dibuat' }
+*/
+Kenapa demikian? Executor function mengeksekusi resolve() dengan membawa data string “Kopi berhasil dibuat”. Coba kita ubah nilai dari variabel isCoffeeMakerReady menjadi false, maka executor function akan mengeksekusi reject() dengan membawa pesan rejection "Mesin Kopi tidak bisa digunakan!".
+
+Dari output yang dihasilkan baik ketika fulfilled ataupun rejected masih berupa Promise, bukan nilai yang dibawa oleh fungsi resolve atau reject itu sendiri. Lantas bagaimana cara untuk mengakses nilai yang dibawa oleh fungsi-fungsi tersebut? Caranya adalah dengan menggunakan method .then() yang tersedia pada objek Promise.
+
+onFulfilled and onRejected Functions
+Untuk menangani nilai yang dikirimkan oleh resolve() ketika Promise onFulfilled, kita gunakan method .then() pada objek promise yang kita buat. Lalu di dalammethod .then() kita berikan parameter berupa function yang berguna sebagai handle callback.
+```javascript
+const executorFunction = (resolve, reject) => {
+const isCoffeeMakerReady = true;
+if(isCoffeeMakerReady) {
+resolve("Kopi berhasil dibuat");
+} else {
+reject("Mesin Kopi tidak bisa digunakan!")
+}
+}
+const handlerSuccess = resolvedValue => {
+console.log(resolvedValue);
+}
+const makeCoffee = new Promise(executorFunction);
+makeCoffee.then(handlerSuccess)
+/* output:
+Kopi berhasil dibuat
+*/
+```
+makeCoffee merupakan objek promise yang akan menghasilkan resolve() dengan membawa nilai ‘Kopi berhasil dibuat’.
+Lalu kita mendeklarasikan fungsi handlerSuccess() yang mencetak nilai dari parameternya.
+Kemudian kita memanggil method .then() dari makeCoffee dan memberikan handlerSuccess sebagai parameternya.
+etika makeCoffee terpenuhi (fulfilled), maka handlerSuccess() akan terpanggil dengan parameter nilai yang dibawa oleh resolve(). Sehingga output akan menghasilkan “Kopi berhasil dibuat”.
+Namun bagaimana jika objek promise menghasilkan kondisi rejected? Bagaimana cara menangani nilai yang dikirimkan oleh reject()?
+```javascript
+const executorFunction = (resolve, reject) => {
+const isCoffeeMakerReady = false;
+if(isCoffeeMakerReady) {
+resolve("Kopi berhasil dibuat");
+} else {
+reject("Mesin Kopi tidak bisa digunakan!")
+}
+}
+const handlerSuccess = resolvedValue => {
+console.log(resolvedValue);
+}
+const handlerRejected = rejectionReason => {
+console.log(rejectionReason);
+}
+const makeCoffee = new Promise(executorFunction);
+makeCoffee.then(handlerSuccess,handlerRejected);
+
+
+/* output:
+Mesin Kopi tidak bisa digunakan!
+*/
+```
+onRejected with Catch Method
+Method .catch() mirip seperti .then(). Namun method ini hanya menerima satu parameter function yang digunakan untuk rejected handler. Method .catch() ini akan terpanggil bilamana objek promise memiliki kondisi onRejected. Berikut contoh penggunaan dari method
+```javascript
+const executorFunction = (resolve, reject) => {
+const isCoffeeMakerReady = false;
+if(isCoffeeMakerReady) {
+resolve("Kopi berhasil dibuat");
+} else {
+reject("Mesin Kopi tidak bisa digunakan!")
+}
+}
+const handlerSuccess = resolvedValue => {
+console.log(resolvedValue);
+}
+const handlerRejected = rejectionReason => {
+console.log(rejectionReason);
+}
+const makeCoffee = new Promise(executorFunction);
+makeCoffee.then(handlerSucces)
+.catch(handlerRejected);
+
+
+/* output:
+Mesin Kopi tidak bisa digunakan!
+*/
+```
+Dengan menggunakan method catch(), kita dapat menerapkan prinsip separation of concerns sekaligus membuat kodenya lebih rapi
 ### Async & Await
 Async Await dalah fitur yang diperkenalkan pada ES2017, digunakan untuk membuat kode asynchronous
 namun dengan cara synchronous sehingga lebih mudah dipahami.
