@@ -67,6 +67,67 @@ const person1 = Object.freeze({
 person1.name = "Hafid";
 console.log(person1);
 ```
+
+### Function
+#### High Order Function
+fungsi memanggil fungsi sebagai parameter/input
+```javascript
+Higher order function
+function add(num1, num2) {
+  return num1 + num2;
+}
+
+function substract(num1, num2) {
+  return num1 - num2;
+}
+
+function multiply(num1, num2) {
+  return num1 * num2;
+}
+
+function divide(num1, num2) {
+  return num1 / num2;
+}
+
+function calculator(num1, num2, operator) {
+  return operator(num1, num2);
+}
+
+calculator(3, 4, add)
+```
+
+#### Constructor Function
+namanya ditulis huruf awal harus kpaital
+
+```javascript
+function BellBoy(name, age, hasWorkPermit, languages) {
+//melakuan pencockan input/parameter dengan nama properti
+this.name = name;
+this.age = age;
+this.hashWorkPermit = hasWorkPermit;
+this.languages = languages;
+}
+
+//menginisialisasi object yang baru / membuat objek
+var bellboy1 = new BellBoy("fahriz", 20, 2, ["Indonesia", "English"]);
+console.log(BellBoy)
+
+function HouseKeeper(yearsOfExpreince, name, cleaningRepertoire) {
+  this.yearsOfExpreince = yearsOfExpreince;
+  this.name = name;
+  this.cleaningRepertoire = cleaningRepertoire;
+  this.clean = function() {
+    alert('Cleaning in progress.');
+  }
+}
+
+var houseKeeper1 = new HouseKeeper(2, "test", "test")
+houseKeeper1.clean();
+```
+
+##### Callback Function
+
+
 ### Arrow Function
 Arrow function adalah cara alternatif dalam menulis suatu fungsi pada Javascript. Cara ini diperkenalkan
 sejak ES6.
