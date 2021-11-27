@@ -126,7 +126,13 @@ houseKeeper1.clean();
 ```
 
 ##### Callback Function
+```javascript
+document.addEventListener("keypress", respondToKey(event));
 
+function respondToKey(event) {
+  console.log("Key Pressed");
+}
+```
 
 ### Arrow Function
 Arrow function adalah cara alternatif dalam menulis suatu fungsi pada Javascript. Cara ini diperkenalkan
@@ -820,6 +826,7 @@ Promise merupakan fitur untuk proses asynchronous yang diperkenalkan mulai ES6. 
 proses asynchronous setidaknya ada dua kemungkinan hasilnya yaitu: berhasil dan gagal.
 Nah, promise ini memastikan ada hasil dari sebuah proses asynchronous tersebut, entah itu berhasil
 atau gagal
+
 ```javascript
 let promise = new Promise((resolve, reject) => {
   let xhr = new XMLHttpRequest();
@@ -832,14 +839,15 @@ let promise = new Promise((resolve, reject) => {
   xhr.open("GET", "https://jsonplaceholder.typicode.com/todos/1", true);
   xhr.send();
 });
-
 promise
   .then((result) => document.writeln(result))
   .catch((error) => document.writeln(error));
 document.writeln("loading ...");
 ```
+
 Terkait dengan request ke web service, Javascript sejak ES6 juga memperkenalkan fitur fetch yang
 bekerja dengan menggunakan promise. Berikut ini contoh kode yang hasilnya sama dengan sebelumnya
+
 ```javascript
 let promise = fetch("https://jsonplaceholder.typicode.com/todos/1");
 promise
@@ -848,6 +856,7 @@ promise
   .catch((error) => document.writeln(error));
 document.writeln("loading ...");
 ```
+
 Method then dipanggil dua kali karena fitur fetch akan mengembalikan response dalam bentu object.
 Nah untuk mengubahnya menjadi format JSON maka kita bisa gunakan method json() yang
 mengembalikan promise juga sehingga kita gunakan method then yang kedua untuk mendapatkan data
@@ -869,7 +878,8 @@ Namun jika kita jalankan kode tersebut, akan mengakibatkan eror seperti ini:
 
 /* ERROR: Promise resolver undefined is not a function */
 Di dalam constructor Promise kita perlu menetapkan resolver function atau bisa disebut executor function di mana fungsi tersebut akan dijalankan secara otomatis ketika constructor Promise dipanggil.
-``javascript
+
+```javascript
 const executorFunction = (resolve, reject) => {
 const isCoffeeMakerReady = true;
 if(isCoffeeMakerReady) {
@@ -901,6 +911,7 @@ Dari output yang dihasilkan baik ketika fulfilled ataupun rejected masih berupa 
 
 onFulfilled and onRejected Functions
 Untuk menangani nilai yang dikirimkan oleh resolve() ketika Promise onFulfilled, kita gunakan method .then() pada objek promise yang kita buat. Lalu di dalammethod .then() kita berikan parameter berupa function yang berguna sebagai handle callback.
+
 ```javascript
 const executorFunction = (resolve, reject) => {
 const isCoffeeMakerReady = true;
@@ -919,11 +930,13 @@ makeCoffee.then(handlerSuccess)
 Kopi berhasil dibuat
 */
 ```
+
 makeCoffee merupakan objek promise yang akan menghasilkan resolve() dengan membawa nilai ‘Kopi berhasil dibuat’.
 Lalu kita mendeklarasikan fungsi handlerSuccess() yang mencetak nilai dari parameternya.
 Kemudian kita memanggil method .then() dari makeCoffee dan memberikan handlerSuccess sebagai parameternya.
 etika makeCoffee terpenuhi (fulfilled), maka handlerSuccess() akan terpanggil dengan parameter nilai yang dibawa oleh resolve(). Sehingga output akan menghasilkan “Kopi berhasil dibuat”.
 Namun bagaimana jika objek promise menghasilkan kondisi rejected? Bagaimana cara menangani nilai yang dikirimkan oleh reject()?
+
 ```javascript
 const executorFunction = (resolve, reject) => {
 const isCoffeeMakerReady = false;
@@ -949,6 +962,7 @@ Mesin Kopi tidak bisa digunakan!
 ```
 onRejected with Catch Method
 Method .catch() mirip seperti .then(). Namun method ini hanya menerima satu parameter function yang digunakan untuk rejected handler. Method .catch() ini akan terpanggil bilamana objek promise memiliki kondisi onRejected. Berikut contoh penggunaan dari method
+
 ```javascript
 const executorFunction = (resolve, reject) => {
 const isCoffeeMakerReady = false;
@@ -973,6 +987,7 @@ makeCoffee.then(handlerSucces)
 Mesin Kopi tidak bisa digunakan!
 */
 ```
+
 Dengan menggunakan method catch(), kita dapat menerapkan prinsip separation of concerns sekaligus membuat kodenya lebih rapi
 ### Async & Await
 Async Await dalah fitur yang diperkenalkan pada ES2017, digunakan untuk membuat kode asynchronous
