@@ -134,8 +134,8 @@ function respondToKey(event) {
 }
 ```
 document adalah high order function karena memiliki fungsi sebagai parameter atau input
-disisi lain respondTokey adalah callback function karena menunggu setelah event terjadi baru fungsi tersebut di panggil kembali
-dan di eksekusi
+disisi lain fungsi yang menjadi parameter atau input respondTokey adalah callback function 
+karena menunggu event apa yang terdeteksi dan terjadi terjadi baru fungsi tersebut di panggil kembali dan di eksekusi
 
 ### Arrow Function
 Arrow function adalah cara alternatif dalam menulis suatu fungsi pada Javascript. Cara ini diperkenalkan
